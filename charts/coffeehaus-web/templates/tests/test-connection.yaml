@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "coffeehaus-web.fullname" . }}-test-connection"
+  labels:
+{{ include "coffeehaus-web.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "coffeehaus-web.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
