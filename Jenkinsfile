@@ -9,6 +9,9 @@ pipeline {
         spec:
           serviceAccountName: jenkins
           containers:
+          - name: node
+            image: node:8.16.2
+            tty: true
           - name: docker
             image: docker:latest
             tty: true
@@ -41,26 +44,31 @@ pipeline {
     }
 
     stage('Test') {
+      when {
+        not {
+          branch 'develop'
+        }
+      }
       steps {
-        echo 'lol u w0t m8'
+        container('node') {
+          sh 'echo \'i need to write tests\' && ' +
+           ' npm install'
+        }
       }
     }
 
     stage('Build, Tag & Push Docker Image') {
       when {
-        allOf {
-          branch 'develop'
-          expression {
-            return false
-          }
+        anyOf {
+          branch 'develop'; branch 'master'
         }
       }
       steps {
         container('docker') {
           withCredentials([file(credentialsId: 'jenkins-gcr', variable: 'DOCKER_GOOGLE_CREDENTIALS')]) {
             sh 'cat $DOCKER_GOOGLE_CREDENTIALS | docker login -u _json_key --password-stdin https://us.gcr.io && ' +
-              ' docker image build -t \'us.gcr.io/omlett-platform/coffeehaus-web:dev\' . && ' +
-              ' docker push us.gcr.io/omlett-platform/coffeehaus-web:dev'
+              ' docker image build -t \'us.gcr.io/omlett-platform/coffeehaus-web\' . && ' +
+              ' docker push us.gcr.io/omlett-platform/coffeehaus-web'
           }
         }
       }
@@ -68,11 +76,8 @@ pipeline {
 
     stage('Helm Install') {
       when {
-        allOf {
-          branch 'develop'
-          expression {
-            return false
-          }
+        anyOf {
+          branch 'develop'; branch 'master'
         }
       }
       steps {
