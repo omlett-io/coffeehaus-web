@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: us.gcr.io/omlett-platform/coffeehaus-web
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
