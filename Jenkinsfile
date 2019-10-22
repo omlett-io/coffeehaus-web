@@ -21,7 +21,7 @@ pipeline {
           - name: helm
             image: dtzar/helm-kubectl:2.14.3
             tty: true
-            command: ['sh', '-c', 'helm plugin install https://github.com/chartmuseum/helm-push']
+            command: ['sh', '-c', 'helm init --client-only && helm plugin install https://github.com/chartmuseum/helm-push']
           volumes:
             - name: dockersock
               hostPath:
@@ -90,8 +90,7 @@ pipeline {
       steps {
         container('helm') {
           withCredentials([text(credentialsId: 'chartmuseum-secret', variable: 'CHARTMUSEUM_CREDENTIALS')])
-          sh ' helm init --client-only && ' +
-            ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
+          sh ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
             ' helm push ./charts/coffeehaus-web chartmuseum && ' +
             ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus'
         }
