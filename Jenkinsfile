@@ -88,12 +88,13 @@ pipeline {
       }
       steps {
         container('helm') {
-          withCredentials([string(credentialsId: 'chartmuseum-secret', variable: 'CHARTMUSEUM_CREDENTIALS')])
-          sh 'helm init --client-only && ' +
-            ' helm plugin install https://github.com/chartmuseum/helm-push && ' +
-            ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
-            ' helm push ./charts/coffeehaus-web chartmuseum && ' +
-            ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus'
+          withCredentials([string(credentialsId: 'chartmuseum-secret', variable: 'CHARTMUSEUM_CREDENTIALS')]) {
+            sh 'helm init --client-only && ' +
+              ' helm plugin install https://github.com/chartmuseum/helm-push && ' +
+              ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
+              ' helm push ./charts/coffeehaus-web chartmuseum && ' +
+              ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus'
+          }
         }
       }
     }
