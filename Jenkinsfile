@@ -61,6 +61,9 @@ pipeline {
       when {
         anyOf {
           branch 'develop'; branch 'master'
+          expression {
+            return true
+          }
         }
       }
       steps {
@@ -78,6 +81,9 @@ pipeline {
       when {
         anyOf {
           branch 'develop'; branch 'master'
+          expression {
+            return true
+          }
         }
       }
       steps {

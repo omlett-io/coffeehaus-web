@@ -22,7 +22,7 @@ class PortalPage extends Component<State> {
             "realm": "coffeehaus",
             "auth-server-url": "https://keycloak.omlett.io/auth",
             "ssl-required": "all",
-            "resource": "coffeehaus",
+            "clientId": "coffeehaus",
             "public-client": true,
             "confidential-port": 0
         });
