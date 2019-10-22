@@ -92,6 +92,7 @@ pipeline {
             sh 'helm init --client-only && ' +
               ' helm plugin install https://github.com/chartmuseum/helm-push && ' +
               ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
+              ' helm repo update && ' +
               ' helm push ./charts/coffeehaus-web chartmuseum && ' +
               ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus'
           }
