@@ -18,15 +18,7 @@ class PortalPage extends Component<State> {
     }
 
     initializeKeycloak = () => {
-        const keycloak = Keycloak({
-            "realm": "coffeehaus",
-            "auth-server-url": "https://keycloak.omlett.io/auth",
-            "ssl-required": "all",
-            "clientId": "coffeehaus",
-            "public-client": true,
-            "confidential-port": 0
-        });
-        console.log("help me pls");
+        const keycloak = Keycloak('/keycloak.json');
         keycloak.init({onLoad: 'login-required'})
             .success(authenticated => {
             this.setState({ keycloak: keycloak, authenticated: authenticated })
