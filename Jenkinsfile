@@ -102,6 +102,7 @@ pipeline {
               ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
               ' helm repo update && ' +
               ' helm push -f ./charts/coffeehaus-web chartmuseum && ' +
+              ' helm repo update && ' +
               ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus'
           }
         }
