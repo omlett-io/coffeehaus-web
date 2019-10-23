@@ -5,9 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: us.gcr.io/omlett-platform/omlett-io
+  repository: us.gcr.io/omlett-platform/coffeehaus-web
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
@@ -28,7 +28,7 @@ ingress:
         - /
 
   tls:
-  - secretName: coffehaus-tls-cert
+  - secretName: coffeehaus-tls-cert
     hosts:
     - coffeehaus.omlett.io
 

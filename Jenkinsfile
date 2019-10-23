@@ -29,6 +29,14 @@ pipeline {
     }
   }
 
+  parameters {
+      booleanParam(name: 'FORCE_DOCKER_PUBLISH', defaultValue: false,
+        description: 'Force docker to build, push')
+
+      booleanParam(name: 'FORCE_HELM_PUBLISH', defaultValue: false,
+        description: 'Force helm to push, install')
+    }
+
   stages {
     stage('Checkout from GitHub') {
       steps {
@@ -52,7 +60,7 @@ pipeline {
       steps {
         container('node') {
           sh 'echo \'i need to write tests\' && ' +
-           ' npm install'
+           ' echo npm install'
         }
       }
     }
@@ -61,6 +69,9 @@ pipeline {
       when {
         anyOf {
           branch 'develop'; branch 'master'
+          expression {
+            return params.FORCE_DOCKER_PUBLISH
+          }
         }
       }
       steps {
@@ -74,17 +85,26 @@ pipeline {
       }
     }
 
-    stage('Helm Install') {
+    stage('Publish & Deploy Helm Chart') {
       when {
         anyOf {
           branch 'develop'; branch 'master'
+          expression {
+            return params.FORCE_HELM_PUBLISH
+          }
         }
       }
       steps {
         container('helm') {
-          sh 'ls -a && ' +
-            ' helm init --client-only --service-account jenkins && ' +
-            ' helm install --name coffeehaus-web ./charts/coffeehaus-web --namespace coffeehaus'
+          withCredentials([string(credentialsId: 'chartmuseum-secret', variable: 'CHARTMUSEUM_CREDENTIALS')]) {
+            sh 'helm init --client-only && ' +
+              ' helm plugin install https://github.com/chartmuseum/helm-push && ' +
+              ' helm repo add chartmuseum https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
+              ' helm repo update && ' +
+              ' helm push -f ./charts/coffeehaus-web chartmuseum && ' +
+              ' helm repo update && ' +
+              ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus --recreate-pods'
+          }
         }
       }
     }
