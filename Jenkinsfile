@@ -29,6 +29,14 @@ pipeline {
     }
   }
 
+  parameters {
+      booleanParam(name: 'FORCE_DOCKER_PUBLISH', defaultValue: false,
+        description: 'Force docker to build, push')
+
+      booleanParam(name: 'FORCE_HELM_PUBLISH', defaultValue: false,
+        description: 'Force helm to push, install')
+    }
+
   stages {
     stage('Checkout from GitHub') {
       steps {
@@ -59,10 +67,10 @@ pipeline {
 
     stage('Build, Tag & Push Docker Image') {
       when {
-        allOf {
+        anyOf {
           branch 'develop'; branch 'master'
           expression {
-            return true
+            return params.FORCE_DOCKER_PUBLISH
           }
         }
       }
@@ -82,7 +90,7 @@ pipeline {
         anyOf {
           branch 'develop'; branch 'master'
           expression {
-            return true
+            return params.FORCE_HELM_PUBLISH
           }
         }
       }
