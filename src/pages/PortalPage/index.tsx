@@ -20,7 +20,7 @@ class PortalPage extends Component<State> {
     initializeKeycloak = () => {
         const keycloak = Keycloak('/keycloak.json');
         keycloak.init({onLoad: 'login-required'})
-            .success(authenticated => {
+            .success((authenticated: boolean) => {
             this.setState({ keycloak: keycloak, authenticated: authenticated })
             })
             .error(e => {

@@ -1,7 +1,7 @@
 {
   "realm": "coffeehaus",
   "auth-server-url": "https://keycloak.omlett.io/auth",
-  "ssl-required": "all",
+  "ssl-required": "none",
   "resource": "coffeehaus",
   "public-client": true,
   "confidential-port": 0
