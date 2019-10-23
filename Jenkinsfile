@@ -103,7 +103,7 @@ pipeline {
               ' helm repo update && ' +
               ' helm push -f ./charts/coffeehaus-web chartmuseum && ' +
               ' helm repo update && ' +
-              ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus'
+              ' helm upgrade coffeehaus-web chartmuseum/coffeehaus-web --namespace coffeehaus --recreate-pods'
           }
         }
       }
