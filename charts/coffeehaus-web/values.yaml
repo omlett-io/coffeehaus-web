@@ -26,11 +26,17 @@ ingress:
     - host: coffeehaus.omlett.io
       paths:
         - /
+    - host: coffeehaus.io
+      paths:
+        - /
 
   tls:
   - secretName: coffeehaus-tls-cert
     hosts:
     - coffeehaus.omlett.io
+  - secretName: coffeehaus-io-tls-cert
+    hosts:
+    - coffeehaus.io
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
