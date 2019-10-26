@@ -1,16 +1,16 @@
 import React from "react";
 import KeycloakContext from "../../contexts/user";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 function LoginPage() {
-    const [key, setKey] = React.useContext(KeycloakContext);
+    const [state, setState] = React.useContext(KeycloakContext);
 
-    if (!key || key.authenticated !== true) {
-        const keycloak = key.keycloak;
+    if (!state.keycloak || state.keycloak.authenticated !== true) {
+        const keycloak = state.keycloak;
         keycloak.init({onLoad: 'login-required'})
             .success((authenticated: boolean) => {
                 console.log('Authenticated: ' + authenticated);
-                setKey(({
+                setState(({
                     keycloak: keycloak
                 }))
             })
@@ -19,7 +19,7 @@ function LoginPage() {
             });
     }
 
-    if (key.keycloak.authenticated === true) {
+    if (state.keycloak.authenticated === true) {
         return <Redirect to='/'/>
     } else {
         return <p>Initializing Keycloak...</p>

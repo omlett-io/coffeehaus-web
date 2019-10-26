@@ -6,12 +6,12 @@ const KeycloakContext = React.createContext();
 export default KeycloakContext;
 
 export const KeycloakProvider = (props: { children: React.ReactNode; }) => {
-    const [key, setKey] = React.useState({
+    const [state, setState] = React.useState({
         keycloak: Keycloak('/keycloak.json')
     });
 
     return (
-        <KeycloakContext.Provider value={[key, setKey]}>
+        <KeycloakContext.Provider value={[state, setState]}>
             {props.children}
         </KeycloakContext.Provider>
     )

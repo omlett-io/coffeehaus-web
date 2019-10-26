@@ -7,8 +7,8 @@ import PrivateRoute from "./PrivateRoute";
 function Router() {
     return (
         <div>
-            <PrivateRoute exact path="/" component={PortalPage}/>
-            <Route path="/login" component={LoginPage}/>
+            <PrivateRoute exact path="/" component={ PortalPage }/>
+            <Route path="/login" component={ LoginPage }/>
         </div>
     )
 }
