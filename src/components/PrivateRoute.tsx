@@ -3,10 +3,11 @@ import {Route, RouteProps} from 'react-router-dom'
 import UserContext from "../contexts/user";
 import LoginPage from "../pages/LoginPage";
 
-function PrivateRoute(props: RouteProps, component: React.ComponentType) {
+function PrivateRoute(props: RouteProps) {
     const [state] = React.useContext(UserContext);
+    const { component } = props;
 
-    const authorizedDestination: React.ComponentType = (!state.keycloak || state.keycloak.authenticated !== true)
+    const authorizedDestination = (!state.keycloak || !component || state.keycloak.authenticated !== true)
         ? LoginPage
         : component;
 
