@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option java_package = "io.omlett.coffeehaus.player.service.proto";
+option java_multiple_files = true;
+
+enum MusicStreamingService {
+  SPOTIFY = 0;
+  SOUNDCLOUD = 1;
+  YOUTUBE = 2;
+}
+
+enum PlayerCommand {
+  PAUSE = 0;
+  PLAY_NEXT = 1;
+  PLAY_NOW = 2;
+  ADD_TO_QUEUE = 3;
+  REMOVE_FROM_QUEUE = 4;
+}
+
+message AuthInfo {
+  string token = 1;
+}
+
+message AccountProfile {
+  string account_id = 1;
+  string username = 2;
+  string email_address = 3;
+  string first_name = 4;
+  string middle_name = 5;
+  string last_name = 6;
+}
+
+message Player {
+  string id = 1;
+  MusicStreamingService type = 2;
+  string owner_id = 3;
+}
+
+message AuthorizationUriRequest {
+  AuthInfo auth = 1;
+  repeated MusicStreamingService services = 2;
+}
+
+message AuthorizationUriResponse {
+  repeated string service_uri = 1;
+}
+
+message AddPlayerRequest {
+  AuthInfo auth = 1;
+  MusicStreamingService player_type = 2;
+  string player_authorization_code = 3;
+}
+
+message AddPlayerResponse {
+  bool status = 1;
+  Player player = 2;
+}
+
+message DeletePlayerRequest {
+  AuthInfo auth = 1;
+  string player_id = 2;
+}
+
+message AddPlayerControlRequest {
+  AuthInfo auth = 1;
+  Player player = 2;
+}
+
+message DeletePlayerControlRequest {
+  AuthInfo auth = 1;
+  Player player = 2;
+}
+
+message PausePlayerRequest {
+  AuthInfo auth = 1;
+  PlayerCommand command = 2;
+}

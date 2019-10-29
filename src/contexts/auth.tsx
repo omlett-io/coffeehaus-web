@@ -1,5 +1,5 @@
 import React from "react"
-import { KeycloakAdapter } from "../components/AuthAdapters";
+import { KeycloakAdapter } from "../utils/AuthAdapters";
 
 // @ts-ignore
 const AuthContext = React.createContext();

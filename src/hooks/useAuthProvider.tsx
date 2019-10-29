@@ -1,6 +1,6 @@
 import React from "react";
 import AuthContext from "../contexts/auth";
-import { KeycloakAdapter } from "../components/AuthAdapters";
+import { KeycloakAdapter } from "../utils/AuthAdapters";
 
 const useAuthProvider = () => {
     const [ state, setState ] = React.useContext( AuthContext );
@@ -33,7 +33,7 @@ const useAuthProvider = () => {
         initialize,
         isInitialized: state.initialized,
         isAuthenticated: state.authenticated,
-        getToken: state.adapter.token,
+        token: state.adapter.token,
         logout
     }
 };

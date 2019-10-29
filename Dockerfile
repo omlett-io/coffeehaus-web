@@ -24,6 +24,7 @@ RUN npm run build
 FROM nginx:alpine
 
 RUN apk add --no-cache bash
+RUN apk add --no-cache protobuf
 
 COPY config/nginx/conf.d /etc/nginx/
 COPY --from=appbuild /usr/src/app/build /usr/share/nginx/html
